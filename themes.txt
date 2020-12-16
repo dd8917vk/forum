@@ -1,0 +1,19 @@
+Name: Vampire Black
+Hex: #0D0208
+RGB: (13, 2, 8)
+CMYK: 0, 0.846, 0.384, 0.949
+DARK GREEN	
+Name: Dark Green
+Hex: #003B00
+RGB: (0, 59, 0)
+CMYK: 1, 0, 1, 0.768
+ISLAMIC GREEN	
+Name: Islamic Green
+Hex: #008F11
+RGB: (0, 143, 17)
+CMYK: 1, 0, 0.881, 0.439
+MALACHITE	
+Name: Malachite
+Hex: #00FF41
+RGB: (0, 255, 65)
+CMYK: 1, 0, 0.745, 0

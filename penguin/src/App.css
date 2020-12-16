@@ -1,0 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+.App{
+  height:100vh;
+  font-family: 'Press Start 2P', cursive;
+  font-size: 10px;
+  /* background-image: url('./static/matrix.jpeg'); */
+  background-image: url('./static/matrix.jpeg');
+  background-size:100% 100vh;
+}

@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=VT323&display=swap');
+
+.navbar {
+  overflow: hidden;
+  background-color: #0D0208;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding-top:0;
+  border-bottom: 4px solid #008F11;
+}
+.navbar a {
+  font-family: 'VT323', monospace;
+  
+  float: left;
+  display: block;
+  color: #008F11;
+  text-align: center;
+  padding: 17px 16px;
+  text-decoration: none;
+  font-size: 21px;
+}
+
+.navbar a:hover {
+  background: #003B00;
+  color: #00FF41;
+}
+
+img {
+  margin: auto auto;
+  width: 10%;
+  margin-top: 15px;
+}

@@ -1,0 +1,11 @@
+* {
+    color:whitesmoke;
+}
+td {
+    border: 1px solid whitesmoke;
+    padding: 8px;
+}
+
+table {
+    margin: auto auto;
+}

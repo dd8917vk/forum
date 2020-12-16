@@ -1,0 +1,11 @@
+a, a:link, a:visited {
+    color: rgb(194, 194, 194);
+}
+li {
+    display:inline;
+    color: #00FF41;
+    font-size:14px;
+}
+div {
+    text-align:center;
+}

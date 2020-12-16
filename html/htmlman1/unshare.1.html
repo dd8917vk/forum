@@ -1,0 +1,374 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <title>unshare(1) — Linux manual pages</title>
+  <link rel="stylesheet" type="text/css" href="../stylesheet/manpages.css" />
+  
+  <link rel="home" href="../index.html" title="unshare(1) — Linux manual pages" />
+  <script type="text/javascript" src="../stylesheet/manpages.js" xml:space="preserve"> </script>
+  <link rel="icon" href="../stylesheet/icon.gif" type="image/gif" />
+</head>
+<body onload="javascript:init()">
+  <div class="navheader">
+    <table width="100%">
+      <tbody>
+        <tr>
+          <td style="width: 33%" rowspan="1" colspan="1"><a href="../index.html" shape="rect">Linux
+          manual pages</a></td>
+          <th rowspan="1" colspan="1"><a href="../index1.html" shape="rect">Section 1</a></th>
+          <td style="width: 33%" rowspan="1" colspan="1"> </td>
+        </tr>
+      </tbody>
+    </table>
+    <hr />
+  </div>
+  <div class="refentry">
+    <a id="unshare.1" name="unshare.1" shape="rect"> </a>
+    <div class="titlepage"> </div>
+    <div class="refnamediv">
+      <h2>Name</h2>
+      <p>unshare — run program with some namespaces unshared
+      from parent</p>
+    </div>
+    <div class="refsynopsisdiv">
+      <h2>Synopsis</h2>
+      <div class="cmdsynopsis">
+        <p><code class="command">unshare</code> [options] [ program
+        [arguments] ]</p>
+      </div>
+    </div>
+    <div class="refsect1">
+      <a id="unshare-1_sect1" name="unshare-1_sect1" shape="rect"> </a>
+      <h2>DESCRIPTION</h2>
+      <p>Unshares the indicated namespaces from the parent process
+      and then executes the specified <em class="parameter"><code>program</code></em>. If <em class="parameter"><code>program</code></em> is not given, then
+      ``${SHELL}'' is run (default: /bin/sh).</p>
+      <p>The namespaces can optionally be made persistent by bind
+      mounting /proc/<span class="command"><strong>pid</strong></span>/ns/<span class="command"><strong>type</strong></span> files to a filesystem
+      path and entered with <a class="link" href="../htmlman1/nsenter.1.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">nsenter</span>(1)</span></a> even after the
+      <em class="parameter"><code>program</code></em> terminates
+      (except PID namespaces where permanently running init process
+      is required). Once a persistent namespace is no longer
+      needed, it can be unpersisted with <a class="link" href="../htmlman8/umount.8.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">umount</span>(8)</span></a>. See the
+      <code class="constant">EXAMPLES</code> section for more
+      details.</p>
+      <p>The namespaces to be unshared are indicated via options.
+      Unshareable namespaces are:</p>
+      <div class="variablelist">
+        <dl class="variablelist">
+          <dt><span class="term">mount namespace</span></dt>
+          <dd>
+            <p>Mounting and unmounting filesystems will not affect
+            the rest of the system, except for filesystems which
+            are explicitly marked as shared (with <span class="emphasis"><em>mount --make-shared</em></span>; see
+            <code class="filename">/proc/self/mountinfo</code> or
+            <span class="emphasis"><em>findmnt
+            -o+PROPAGATION</em></span> for the <span class="command"><strong>shared</strong></span> flags). For
+            further details, see <a class="link" href="../htmlman7/mount_namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">mount_namespaces</span>(7)</span></a>
+            and the discussion of the <code class="constant">CLONE_NEWNS</code> flag in <a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>.</p>
+            <p><span class="command"><strong>unshare</strong></span> since
+            util-linux version 2.27 automatically sets propagation
+            to <span class="command"><strong>private</strong></span> in a new
+            mount namespace to make sure that the new namespace is
+            really unshared. It's possible to disable this feature
+            with option <code class="option">−−propagation unchanged</code>.
+            Note that <span class="command"><strong>private</strong></span> is the kernel
+            default.</p>
+          </dd>
+          <dt><span class="term">UTS namespace</span></dt>
+          <dd>
+            <p>Setting hostname or domainname will not affect the
+            rest of the system. For further details, see <a class="link" href="../htmlman7/namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">namespaces</span>(7)</span></a> and the
+            discussion of the <code class="constant">CLONE_NEWUTS</code> flag in <a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>.</p>
+          </dd>
+          <dt><span class="term">IPC namespace</span></dt>
+          <dd>
+            <p>The process will have an independent namespace for
+            POSIX message queues as well as System V message
+            queues, semaphore sets and shared memory segments. For
+            further details, see <a class="link" href="../htmlman7/namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">namespaces</span>(7)</span></a> and the
+            discussion of the <code class="constant">CLONE_NEWIPC</code> flag in <a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>.</p>
+          </dd>
+          <dt><span class="term">network namespace</span></dt>
+          <dd>
+            <p>The process will have independent IPv4 and IPv6
+            stacks, IP routing tables, firewall rules, the
+            <code class="filename">/proc/net</code> and
+            <code class="filename">/sys/class/net</code> directory
+            trees, sockets, etc. For further details, see <a class="link" href="../htmlman7/namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">namespaces</span>(7)</span></a> and the
+            discussion of the <code class="constant">CLONE_NEWNET</code> flag in <a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>.</p>
+          </dd>
+          <dt><span class="term">PID namespace</span></dt>
+          <dd>
+            <p>Children will have a distinct set of PID-to-process
+            mappings from their parent. For further details, see
+            <a class="link" href="../htmlman7/pid_namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">pid_namespaces</span>(7)</span></a> and
+            the discussion of the <code class="constant">CLONE_NEWPID</code> flag in <a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>.</p>
+          </dd>
+          <dt><span class="term">cgroup namespace</span></dt>
+          <dd>
+            <p>The process will have a virtualized view of
+            <code class="filename">/proc/self/cgroup</code>, and
+            new cgroup mounts will be rooted at the namespace
+            cgroup root. For further details, see <a class="link" href="../htmlman7/cgroup_namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">cgroup_namespaces</span>(7)</span></a>
+            and the discussion of the <code class="constant">CLONE_NEWCGROUP</code> flag in <a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>.</p>
+          </dd>
+          <dt><span class="term">user namespace</span></dt>
+          <dd>
+            <p>The process will have a distinct set of UIDs, GIDs
+            and capabilities. For further details, see <a class="link" href="../htmlman7/user_namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">user_namespaces</span>(7)</span></a>
+            and the discussion of the <code class="constant">CLONE_NEWUSER</code> flag in <a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>.</p>
+          </dd>
+        </dl>
+      </div>
+    </div>
+    <div class="refsect1">
+      <a id="unshare-1_sect2" name="unshare-1_sect2" shape="rect"> </a>
+      <h2>OPTIONS</h2>
+      <div class="variablelist">
+        <dl class="variablelist">
+          <dt><span class="term"><code class="option">−i,
+          −−ipc[=<em class="parameter"><code>file</code></em>]</code></span></dt>
+          <dd>
+            <p>Unshare the IPC namespace. If <span class="command"><strong>file</strong></span> is specified,
+            then a persistent namespace is created by a bind
+            mount.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−m,
+          −−mount[=<em class="parameter"><code>file</code></em>]</code></span></dt>
+          <dd>
+            <p>Unshare the mount namespace. If <span class="command"><strong>file</strong></span> is specified,
+            then a persistent namespace is created by a bind mount.
+            Note that <span class="command"><strong>file</strong></span> has to be
+            located on a filesystem with the propagation flag set
+            to <span class="command"><strong>private</strong></span>. Use the
+            command <span class="emphasis"><em>findmnt
+            -o+PROPAGATION</em></span> when not sure about the
+            current setting. See also the examples below.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−n,
+          −−net[=<em class="parameter"><code>file</code></em>]</code></span></dt>
+          <dd>
+            <p>Unshare the network namespace. If <span class="command"><strong>file</strong></span> is specified,
+            then a persistent namespace is created by a bind
+            mount.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−p,
+          −−pid[=<em class="parameter"><code>file</code></em>]</code></span></dt>
+          <dd>
+            <p>Unshare the PID namespace. If <span class="command"><strong>file</strong></span> is specified
+            then persistent namespace is created by a bind mount.
+            See also the <code class="option">−−fork</code> and <code class="option">−−mount−proc</code>
+            options.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−u,
+          −−uts[=<em class="parameter"><code>file</code></em>]</code></span></dt>
+          <dd>
+            <p>Unshare the UTS namespace. If <span class="command"><strong>file</strong></span> is specified,
+            then a persistent namespace is created by a bind
+            mount.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−U,
+          −−user[=<em class="parameter"><code>file</code></em>]</code></span></dt>
+          <dd>
+            <p>Unshare the user namespace. If <span class="command"><strong>file</strong></span> is specified,
+            then a persistent namespace is created by a bind
+            mount.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−C,
+          −−cgroup[=<em class="parameter"><code>file</code></em>]</code></span></dt>
+          <dd>
+            <p>Unshare the cgroup namespace. If <span class="command"><strong>file</strong></span> is specified
+            then persistent namespace is created by bind mount.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−f,
+          −−fork</code></span></dt>
+          <dd>
+            <p>Fork the specified <em class="parameter"><code>program</code></em> as a child
+            process of <span class="command"><strong>unshare</strong></span> rather than
+            running it directly. This is useful when creating a new
+            PID namespace.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−−kill−child[=<em class="parameter"><code>signame</code></em>]</code></span></dt>
+          <dd>
+            <p>When <span class="command"><strong>unshare</strong></span> terminates,
+            have <span class="command"><strong>signame</strong></span> be sent to
+            the forked child process. Combined with <code class="option">−−pid</code> this allows for an
+            easy and reliable killing of the entire process tree
+            below <span class="command"><strong>unshare</strong></span>. If not
+            given, <span class="command"><strong>signame</strong></span> defaults to
+            <code class="constant">SIGKILL</code>. This option
+            implies <code class="option">−−fork</code>.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−−mount−proc[=<em class="parameter"><code>mountpoint</code></em>]</code></span></dt>
+          <dd>
+            <p>Just before running the program, mount the proc
+            filesystem at <span class="command"><strong>mountpoint</strong></span> (default
+            is /proc). This is useful when creating a new PID
+            namespace. It also implies creating a new mount
+            namespace since the /proc mount would otherwise mess up
+            existing programs on the system. The new proc
+            filesystem is explicitly mounted as private (with
+            MS_PRIVATE|MS_REC).</p>
+          </dd>
+          <dt><span class="term"><code class="option">−r,
+          −−map−root−user</code></span></dt>
+          <dd>
+            <p>Run the program only after the current effective
+            user and group IDs have been mapped to the superuser
+            UID and GID in the newly created user namespace. This
+            makes it possible to conveniently gain capabilities
+            needed to manage various aspects of the newly created
+            namespaces (such as configuring interfaces in the
+            network namespace or mounting filesystems in the mount
+            namespace) even when run unprivileged. As a mere
+            convenience feature, it does not support more
+            sophisticated use cases, such as mapping multiple
+            ranges of UIDs and GIDs. This option implies
+            <code class="option">−−setgroups=deny</code>.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−−propagation
+          private|shared|slave|unchanged</code></span></dt>
+          <dd>
+            <p>Recursively set the mount propagation flag in the
+            new mount namespace. The default is to set the
+            propagation to <span class="command"><strong>private</strong></span>. It is
+            possible to disable this feature with the argument
+            <span class="command"><strong>unchanged</strong></span>. The option
+            is silently ignored when the mount namespace
+            (<code class="option">−−mount</code>) is
+            not requested.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−−setgroups
+          allow|deny</code></span></dt>
+          <dd>
+            <p>Allow or deny the <a class="link" href="../htmlman2/getgroups.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">setgroups</span>(2)</span></a> system
+            call in a user namespace.</p>
+            <p>To be able to call <a class="link" href="../htmlman2/getgroups.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">setgroups</span>(2)</span></a>, the
+            calling process must at least have CAP_SETGID. But
+            since Linux 3.19 a further restriction applies: the
+            kernel gives permission to call <a class="link" href="../htmlman2/getgroups.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">setgroups</span>(2)</span></a> only
+            after the GID map (<code class="filename">/proc/</code><em class="replaceable"><code>pid\fPfB/gid_map</code></em>) has
+            been set. The GID map is writable by root when
+            <a class="link" href="../htmlman2/getgroups.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">setgroups</span>(2)</span></a> is
+            enabled (i.e. <span class="command"><strong>allow</strong></span>, the default),
+            and the GID map becomes writable by unprivileged
+            processes when <a class="link" href="../htmlman2/getgroups.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">setgroups</span>(2)</span></a> is
+            permanently disabled (with <span class="command"><strong>deny</strong></span>).</p>
+          </dd>
+          <dt><span class="term"><code class="option">−V,
+          −−version</code></span></dt>
+          <dd>
+            <p>Display version information and exit.</p>
+          </dd>
+          <dt><span class="term"><code class="option">−h,
+          −−help</code></span></dt>
+          <dd>
+            <p>Display help text and exit.</p>
+          </dd>
+        </dl>
+      </div>
+    </div>
+    <div class="refsect1">
+      <a id="unshare-1_sect3" name="unshare-1_sect3" shape="rect"> </a>
+      <h2>NOTES</h2>
+      <p>The proc and sysfs filesystems mounting as root in a user
+      namespace have to be restricted so that a less privileged
+      user can not get more access to sensitive files that a more
+      privileged user made unavailable. In short the rule for proc
+      and sysfs is as close to a bind mount as possible.</p>
+    </div>
+    <div class="refsect1">
+      <a id="unshare-1_sect4" name="unshare-1_sect4" shape="rect"> </a>
+      <h2>EXAMPLES</h2>
+      <div class="informalexample">
+        <pre class="programlisting" xml:space="preserve">
+# unshare --fork --pid --mount-proc readlink /proc/self
+1
+</pre>
+      </div>
+      <p>Establish a PID namespace, ensure we're PID 1 in it
+      against a newly mounted procfs instance.</p>
+      <div class="informalexample">
+        <pre class="programlisting" xml:space="preserve">
+$ unshare --map-root-user --user sh -c whoami
+root
+</pre>
+      </div>
+      <p>Establish a user namespace as an unprivileged user with a
+      root user within it.</p>
+      <div class="informalexample">
+        <pre class="programlisting" xml:space="preserve">
+# touch /root/uts-ns
+# unshare --uts=/root/uts-ns hostname FOO
+# nsenter --uts=/root/uts-ns hostname
+FOO
+# umount /root/uts-ns
+</pre>
+      </div>
+      <p>Establish a persistent UTS namespace, and modify the
+      hostname. The namespace is then entered with <span class="command"><strong>nsenter</strong></span>. The namespace is
+      destroyed by unmounting the bind reference.</p>
+      <div class="informalexample">
+        <pre class="programlisting" xml:space="preserve">
+# mount --bind /root/namespaces /root/namespaces
+# mount --make-private /root/namespaces
+# touch /root/namespaces/mnt
+# unshare --mount=/root/namespaces/mnt
+</pre>
+      </div>
+      <p>Establish a persistent mount namespace referenced by the
+      bind mount /root/namespaces/mnt. This example shows a
+      portable solution, because it makes sure that the bind mount
+      is created on a shared filesystem.</p>
+      <div class="informalexample">
+        <pre class="programlisting" xml:space="preserve">
+# unshare -pf --kill-child -- bash -c "(sleep 999 &amp;) &amp;&amp; sleep 1000" &amp;
+# pid=$!
+# kill $pid
+</pre>
+      </div>
+      <p>Reliable killing of subprocesses of the <em class="parameter"><code>program</code></em>. When <span class="command"><strong>unshare</strong></span> gets killed,
+      everything below it gets killed as well. Without it, the
+      children of <em class="parameter"><code>program</code></em>
+      would have orphaned and been re-parented to PID 1.</p>
+    </div>
+    <div class="refsect1">
+      <a id="unshare-1_sect5" name="unshare-1_sect5" shape="rect"> </a>
+      <h2>SEE ALSO</h2>
+      <p><a class="link" href="../htmlman2/clone.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">clone</span>(2)</span></a>, <a class="link" href="../htmlman2/unshare.2.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">unshare</span>(2)</span></a>, <a class="link" href="../htmlman7/namespaces.7.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">namespaces</span>(7)</span></a>, <a class="link" href="../htmlman8/mount.8.html" target="_top" shape="rect"><span class="citerefentry"><span class="refentrytitle">mount</span>(8)</span></a></p>
+    </div>
+    <div class="refsect1">
+      <a id="unshare-1_sect6" name="unshare-1_sect6" shape="rect"> </a>
+      <h2>AUTHORS</h2>
+      <p><a class="literalurl" href="mailto:dottedmag%20REMOVE%20@%20THIS%20dottedmag.net" target="_top" shape="rect">Mikhail Gusarov</a></p>
+      <p><a class="literalurl" href="mailto:kzak%20REMOVE%20@%20THIS%20redhat.com" target="_top" shape="rect">Karel Zak</a></p>
+    </div>
+    <div class="refsect1">
+      <a id="unshare-1_sect7" name="unshare-1_sect7" shape="rect"> </a>
+      <h2>AVAILABILITY</h2>
+      <p>The unshare command is part of the util-linux package and
+      is available from
+      https://www.kernel.org/pub/linux/utils/util-linux/.</p>
+      <div class="license">
+        <table class="license" style="border-collapse: collapse;">
+          <colgroup span="1">
+            <col span="1" />
+          </colgroup>
+          <tbody>
+            <tr>
+              <td style="" rowspan="1" colspan="1">
+                <div class="literallayout">
+                  <br />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
