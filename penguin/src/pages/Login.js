@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { Redirect, Route, Link, useHistory } from 'react-router-dom';
-
+import Recaptcha from 'react-recaptcha';
 
 const Input = styled.input`
   padding: 0.5em;
@@ -34,6 +34,18 @@ const Button = styled.button`
 `
 const Login = (props) => {
     
+    const [isVerified, setIsVerified] = useState(false);
+
+
+    const recaptchaLoaded = () =>{
+      console.log('captcha loaded');
+    }
+    window.recaptchaLoaded = recaptchaLoaded;
+    const recaptchaVerify = () =>{
+      console.log('captcha verified');
+      setIsVerified(true);
+    } 
+
     let hist = useHistory()
     if (props.isLoggedIn){
         hist.push('/');
@@ -44,9 +56,13 @@ const Login = (props) => {
             <form onSubmit={props.handleLogin}>
             <Input placeholder={"username"} type="text" name="username"/>
             <Input placeholder={"password"}  type="password" name="password" inputColor="whitesmoke" />
-            <Button type="submit">submit</Button>
+            {isVerified ? <Button type="submit">submit</Button> : null}
             </form>
-            <p style={{color:"whitesmoke"}}>YOU KNOW THE DRILL</p>
+            <div style={{display:"inline-block", paddingTop:"0px"}}>
+            <Recaptcha  sitekey='6LehagkaAAAAAPjxnoyAT5kymTs1hROfZCtMNCQM' render='explicit' onloadCallback={recaptchaLoaded} 
+            verifyCallback={recaptchaVerify} theme="dark"/>
+            </div>
+            <p style={{color:"whitesmoke", marginTop:"10px"}}>YOU KNOW THE DRILL</p>
         </div>
     )
 }

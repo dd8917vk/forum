@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { signupUser } from '../api/API';
 import { Link, useHistory } from "react-router-dom";
+import Recaptcha from 'react-recaptcha';
 
 const Input = styled.input`
   padding: 0.5em;
@@ -34,7 +35,16 @@ const Button = styled.button`
 `
 const Signup = () => {
 
+  const [isVerified, setIsVerified] = useState(false);
   const hist = useHistory();
+      const recaptchaLoaded = () =>{
+      console.log('captcha loaded');
+    }
+    window.recaptchaLoaded = recaptchaLoaded;
+    const recaptchaVerify = () =>{
+      console.log('captcha verified');
+      setIsVerified(true);
+    } 
 
   const handleSignup = async (event) => {
     event.preventDefault();
@@ -64,8 +74,11 @@ const Signup = () => {
             <Input placeholder={"password"}  type="password" inputColor="whitesmoke" name="password1"/>
             <Input placeholder={"password"}  type="password" inputColor="whitesmoke" name="password2"/>
             <Input placeholder={"email"}  type="email" inputColor="whitesmoke" name="email"/>
-            <Button type="submit">submit</Button>
-            <p style={{color:"whitesmoke"}}>EMAIL HEADED YOUR WAY</p>
+            {isVerified ? <Button style={{display:"block", margin:"auto auto"}}type="submit">submit</Button> : null}
+             <div style={{display:"inline-block", paddingTop:"0px"}}>
+            <Recaptcha  sitekey='6LehagkaAAAAAPjxnoyAT5kymTs1hROfZCtMNCQM' render='explicit' onloadCallback={recaptchaLoaded} 
+            verifyCallback={recaptchaVerify} theme="dark"/>
+            </div>
           </form>
         </div>
     )
