@@ -6,7 +6,7 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     title = models.CharField(max_length=50)
     date_posted = models.DateTimeField(default=timezone.now)
-
+    
     class Meta:
         ordering = ['date_posted']
 

@@ -16,5 +16,8 @@ urlpatterns = [
     #path('categories/', views.CategoriesView.as_view(), name='category-view'),
     url(r'^categories/', views.CategoriesView.as_view(), name='category-view'),
     url(r'^posts/', views.PostsView.as_view(), name='posts-view'),
+    url(r'^post/(?P<pk>[\w-]+)/$', views.PostDetailView.as_view(), name='post-detail'),
+    url(r'^post-comment/(?P<pk>[\w-]+)/$', views.PostCommentView.as_view(), name='post-comment'),
     url(r'^create-post/(?P<pk>[\w-]+)/$', views.PostCategoryView.as_view(), name='category-post'),
+
 ]

@@ -14,9 +14,9 @@ from django.http import Http404
 
 """
 /categories/
-/posts/
+/posts/ # gets all the posts
 /posts/categoryid/
-/posts/id/
+/posts/id/ Get, update, delete, POST -> 
 /post-comments/<postid>
 
 
@@ -54,6 +54,16 @@ class PostCategoryView(APIView):
             return Response({"message": "created Post"})
          else:
             return Response({"Message": "COULD NOT create POST"})
+
+class PostCommentView(APIView):
+    def post(self, request, pk, format=None):
+        postid = Posts.objects.get(pk=pk)
+        serializer = CreateCommentSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, post=postid)
+            return Response({"message": "created Comment under {}: ".format(postid.title)})
+        else:
+            return Response({"Message": "COULD NOT create Comment"})
 
 #adding comments
 class PostDetailView(APIView):
