@@ -26,7 +26,7 @@ git push forum shay
 
 """
 
-# Create your views here.
+# Create your views here. /forum/categories/
 class CategoriesView(APIView):
     #get request
     def get(self, request, format=None):
@@ -36,7 +36,7 @@ class CategoriesView(APIView):
 
 # View Posts //get, post, update, delete
 
-# Create your views here.
+# Get all posts in database. /forum/posts/
 class PostsView(APIView):
     #get request
     def get(self, request, format=None):
@@ -44,7 +44,7 @@ class PostsView(APIView):
         serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
         return Response(serializer.data)
 
-#adding a post under a category
+#adding a post under a category /forum/create-post/<CATEGORY_ID>
 class PostCategoryView(APIView):
      def post(self, request, pk, format=None):
          categoryid = Category.objects.get(pk=pk)
@@ -55,6 +55,8 @@ class PostCategoryView(APIView):
          else:
             return Response({"Message": "COULD NOT create POST"})
 
+
+#This creates a comment under a post like so /forum/post-comment/<POST ID>/
 class PostCommentView(APIView):
     def post(self, request, pk, format=None):
         postid = Posts.objects.get(pk=pk)
@@ -65,7 +67,8 @@ class PostCommentView(APIView):
         else:
             return Response({"Message": "COULD NOT create Comment"})
 
-#adding comments
+#Detail view for posts like: /forum/post/<POST_ID>/
+#Can get, put, update and delete on this route
 class PostDetailView(APIView):
     def get_object(self, pk):
         try:
