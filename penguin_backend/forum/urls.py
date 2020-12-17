@@ -1,4 +1,5 @@
 from django.urls import path
+from django.conf.urls import url, include
 from . import views
 # from django.urls import path
 # from django.conf.urls import url
@@ -11,5 +12,9 @@ from . import views
 
 urlpatterns = [
     #Command Routes
-    path('', views.test_view, name="test_view"),
+    #path('', views.test_view, name="test_view"),
+    #path('categories/', views.CategoriesView.as_view(), name='category-view'),
+    url(r'^categories/', views.CategoriesView.as_view(), name='category-view'),
+    url(r'^posts/', views.PostsView.as_view(), name='posts-view'),
+    url(r'^create-post/(?P<pk>[\w-]+)/$', views.PostCategoryView.as_view(), name='category-post'),
 ]

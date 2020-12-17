@@ -7,6 +7,12 @@ class Category(models.Model):
     title = models.CharField(max_length=50)
     date_posted = models.DateTimeField(default=timezone.now)
 
+    class Meta:
+        ordering = ['date_posted']
+
+    def __str__(self):
+        return f'Title: {self.title}'
+
 class Posts(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField()
@@ -14,6 +20,7 @@ class Posts(models.Model):
     likes = models.ManyToManyField(User, related_name='users')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
+
     def __str__(self):
         return f'Title: {self.title} Author: {self.author} Date Posted: {self.date_posted}'
 
@@ -23,6 +30,9 @@ class Comments(models.Model):
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
 
+    def __str__(self):
+        return f'Author: {self.author} Date Posted: {self.date_posted}'
+
 class Answers(models.Model):
     body = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
@@ -30,3 +40,8 @@ class Answers(models.Model):
     votes = models.ManyToManyField(User, related_name='votes')
     answered = models.BooleanField(default=False)
     post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f'Author: {self.author} Date Posted: {self.date_posted}'
+
+
