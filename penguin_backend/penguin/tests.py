@@ -50,6 +50,15 @@ class APItest(APITestCase):
         user_count = User.objects.count()
         self.assertEquals(user_count, 1)
 
+    # def test_l_favorites(self):
+	#     # .. your other code... 
+    #     token = Token.objects.get(user__username='user')
+    #     client = APIClient()  
+    #     # Attach the Authorization Token as part of the request.
+    #     client.headers.update({'Authorization': f'Token {token.key}'})
+    #     response = client.get('/api/favorites_list/')
+    #     print(response)
+
     
         #Authenticate to DB
         #Make post request to auth?

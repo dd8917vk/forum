@@ -7,6 +7,13 @@ class Category(models.Model):
     title = models.CharField(max_length=50)
     date_posted = models.DateTimeField(default=timezone.now)
 
+    class Meta: 
+        ordering=['date_posted']
+
+    def __str__(self):
+        return f'Title: {self.title}' 
+
+
 class Posts(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField()
