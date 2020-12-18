@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .serializers import *
 from django.http import HttpResponse, Http404
-from .models import Category, Posts
+from .models import Category, Posts, Comments, Answers
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import filters
@@ -51,7 +51,14 @@ class PostCommentView(APIView):
             return Posts.objects.get(pk=pk)
         except Posts.DoesNotExist:
             raise Http404
-        
+    
+    #view comments under posts
+    def get(self, request, pk, format=None):
+        postid = self.get_object(pk)
+        comments = Comments.objects.filter(post=postid)
+        serializer = ViewCommentsSerializer(comments, context={"request" : request}, many=True)
+        return Response(serializer.data)
+
     def post(self, request, pk, format=None):
         postid = self.get_object(pk)
         serializer = CreateCommentsSerializer(data=request.data)
@@ -87,6 +94,29 @@ class PostDetailView(APIView):
         post = self.get_object(pk)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class PostAnswerView(APIView):
+    def get_object(self, pk):
+        try:
+            return Posts.objects.get(pk=pk)
+        except Posts.DoesNotExist:
+            raise Http404
+    
+    #view comments under posts
+    def get(self, request, pk, format=None):
+        postid = self.get_object(pk)
+        comments = Answers.objects.filter(post=postid)
+        serializer = ViewAnswerSerializer(comments, context={"request" : request}, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, pk, format=None):
+        postid = self.get_object(pk)
+        serializer = PostAnswerSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, post=postid)
+            return Response({"message": "created answer under {}: ".format(postid.title)})
+        else:
+            return Response({"Message": "COULD NOT create answer"})
     # def delete(self, request, format=None):
     #     serializer = CreatePostsSerializer(data=request.data)
     #     if serializer.is_valid(raise_exception=True):

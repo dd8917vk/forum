@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^post/$', views.PostsView.as_view(), name='post-view'),
     url(r'^post/(?P<pk>[\w-]+)/$', views.PostDetailView.as_view(), name='post-detail'),
     url(r'^post-comment/(?P<pk>[\w-]+)/$', views.PostCommentView.as_view(), name='post-comment'),
+    url(r'^post-answer/(?P<pk>[\w-]+)/$', views.PostAnswerView.as_view(), name='post-answer'),
     url(r'^create-post/(?P<pk>[\w-]+)/$', views.PostCategoryView.as_view(), name='category-post'),
 
 ]

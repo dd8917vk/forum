@@ -34,3 +34,13 @@ class CreateAnswerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Answers
         fields = ('body',)
+
+class ViewAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answers
+        fields = '__all__'
+
+class PostAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answers
+        fields = ('body',)
