@@ -8,7 +8,6 @@ class CategoryManager(models.Manager):
         categories = self.objects.all()
         return categories
 
-
 class Category(models.Model):
     title = models.CharField(max_length=50)
     date_posted = models.DateTimeField(default=timezone.now)
