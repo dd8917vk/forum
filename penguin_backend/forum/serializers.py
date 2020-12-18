@@ -2,7 +2,7 @@ from rest_framework import serializers
 #import base64
 #from drf_extra_fields.fields import Base64ImageField
 from rest_framework.validators import UniqueValidator
-from .models import Category, Posts, Comments
+from .models import Category, Posts, Comments, Answers
 from django.contrib.auth.models import User
 
 
@@ -31,4 +31,14 @@ class ViewCommentSerializer(serializers.ModelSerializer):
 class CreateCommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
+        fields = ('body',)
+
+class ViewAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answers
+        fields = '__all__'
+
+class CreateAnswerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Answers
         fields = ('body',)

@@ -58,14 +58,54 @@ class PostCategoryView(APIView):
 
 #This creates a comment under a post like so /forum/post-comment/<POST ID>/
 class PostCommentView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Posts.objects.get(pk=pk)
+        except Posts.DoesNotExist:
+            raise Http404
+    #view comments under posts
+    def get(self, request, pk, format=None):
+        postid = self.get_object(pk)
+        comments = Comments.objects.filter(post=postid)
+        serializer = ViewCommentSerializer(comments, context={"request": request}, many=True )
+        return Response(serializer.data)
+
+    #upload comment
     def post(self, request, pk, format=None):
-        postid = Posts.objects.get(pk=pk)
+        postid = self.get_object(pk)
         serializer = CreateCommentSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save(author=request.user, post=postid)
             return Response({"message": "created Comment under {}: ".format(postid.title)})
         else:
             return Response({"Message": "COULD NOT create Comment"})
+
+#This creates a comment under a post like so /forum/post-comment/<POST ID>/
+class PostAnswerView(APIView):
+
+    def get_object(self, pk):
+        try:
+            return Posts.objects.get(pk=pk)
+        except Posts.DoesNotExist:
+            raise Http404
+    #view comments under posts
+    def get(self, request, pk, format=None):
+        postid = self.get_object(pk)
+        answers = Answers.objects.filter(post=postid)
+        serializer = ViewAnswerSerializer(answers, context={"request": request}, many=True )
+        return Response(serializer.data)
+
+    #upload comment
+    def post(self, request, pk, format=None):
+        postid = self.get_object(pk)
+        serializer = CreateAnswerSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save(author=request.user, post=postid)
+            return Response({"message": "created Answer under {}: ".format(postid.title)})
+        else:
+            return Response({"Message": "COULD NOT create Comment"})
+
 
 #Detail view for posts like: /forum/post/<POST_ID>/
 #Can get, put, update and delete on this route
@@ -94,12 +134,4 @@ class PostDetailView(APIView):
         post = self.get_object(pk)
         post.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
- 
-
-    
-    
-
 

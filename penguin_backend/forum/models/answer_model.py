@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from .post_model import *
 # Create your models here.
 
 class AnswerManager(models.Manager):
