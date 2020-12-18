@@ -33,7 +33,7 @@ function Navbar(props) {
             <Link to="/favorites">
                 <p>Favorites</p>
             </Link>
-            <Link to="/feedback">
+            <Link to="/tty">
                 <p>Tty</p>
             </Link>
             <Link to="/" style={{float:"right"}}><p><img style={{width:"50px", margin:"auto auto"}}id="peng" src={logo}></img></p></Link>

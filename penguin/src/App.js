@@ -7,16 +7,16 @@ import { BrowserRouter as Router, Switch, Route, Link, useParams, Redirect } fro
 import Favorites from './pages/Favorites';
 import Navbar from './components/Navbar';
 import Hr from './components/Hr'
-import Feedback from './pages/Feedback'
 import Login from './pages/Login'
 import Signup from './pages/Signup'
 import { login, getLoggedInUser } from './api/API'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
+import Tty from './pages/Tty'
 //cat wines.json | heroku run --no-tty -a wineapi1983 -- python manage.py loaddata --format=json -
 //http://quotes.stormconsultancy.co.uk/random.json
 
 
-function App(props) {
+function App() {
 
   const [user, setUser] = useState(null);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -92,7 +92,7 @@ function App(props) {
         <Route exact path="/manpage/:command" component={ManualPage} />
         <Route exact path="/about" component={Home} />
         <AuthenticatedRoute exact path="/favorites" render={goFavorites} component={Favorites} />
-        <Route exact path="/feedback" component={Feedback} />
+        <Route exact path="/tty" component={Tty} />
       </Router>
     </div>
     
