@@ -63,12 +63,12 @@ const TtyComponents = (props) => {
 		<div>
 			{props.posts?.map((post, index) => {
 				return (
-					<PostBox>
+					<PostBox key={index}>
 						<TitleControl>{post?.title}</TitleControl>
 						<PostText>{post?.body}</PostText>
 						<PostControl>
 							<Button>edt</Button>
-							<Button>del</Button>
+							<Button onClick={(e)=>{return props.delete(e, post?.id)}}>del</Button>
 							<Meta>{post?.author.toString()}</Meta>
 							<Meta>{post?.date_posted.split("T")[0]}</Meta>
 						</PostControl>
