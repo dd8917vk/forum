@@ -11,10 +11,10 @@ class CommentManager(models.Manager):
         return comments
 
 
-class Comments(models.Model):
+class Comment(models.Model):
     body = models.CharField(max_length=200)
     date_posted = models.DateTimeField(default=timezone.now)
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     objects = CommentManager()
 

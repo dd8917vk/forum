@@ -5,19 +5,17 @@ from .post_model import *
 # Create your models here.
 
 class AnswerManager(models.Manager):
-    
     def get_latest_answers(self):
         answers = self.objects.all()
         return answers
 
-
-class Answers(models.Model):
+class Answer(models.Model):
     body = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     votes = models.ManyToManyField(User, related_name='votes')
     answered = models.BooleanField(default=False)
-    post = models.ForeignKey(Posts, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
     objects = AnswerManager()
 
     def __str__(self):

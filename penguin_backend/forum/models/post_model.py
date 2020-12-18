@@ -11,7 +11,7 @@ class PostManager(models.Manager):
         return posts
 
 
-class Posts(models.Model):
+class Post(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)

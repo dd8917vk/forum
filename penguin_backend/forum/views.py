@@ -40,7 +40,7 @@ class CategoriesView(APIView):
 class PostsView(APIView):
     #get request
     def get(self, request, format=None):
-        posts = Posts.objects.all()
+        posts = Post.objects.all()
         serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
         return Response(serializer.data)
 
@@ -61,13 +61,13 @@ class PostCommentView(APIView):
 
     def get_object(self, pk):
         try:
-            return Posts.objects.get(pk=pk)
-        except Posts.DoesNotExist:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
             raise Http404
     #view comments under posts
     def get(self, request, pk, format=None):
         postid = self.get_object(pk)
-        comments = Comments.objects.filter(post=postid)
+        comments = Comment.objects.filter(post=postid)
         serializer = ViewCommentSerializer(comments, context={"request": request}, many=True )
         return Response(serializer.data)
 
@@ -86,13 +86,13 @@ class PostAnswerView(APIView):
 
     def get_object(self, pk):
         try:
-            return Posts.objects.get(pk=pk)
-        except Posts.DoesNotExist:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
             raise Http404
     #view comments under posts
     def get(self, request, pk, format=None):
         postid = self.get_object(pk)
-        answers = Answers.objects.filter(post=postid)
+        answers = Answer.objects.filter(post=postid)
         serializer = ViewAnswerSerializer(answers, context={"request": request}, many=True )
         return Response(serializer.data)
 
@@ -112,8 +112,8 @@ class PostAnswerView(APIView):
 class PostDetailView(APIView):
     def get_object(self, pk):
         try:
-            return Posts.objects.get(pk=pk)
-        except Posts.DoesNotExist:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
             raise Http404
 
     def get(self, request, pk, format=None):
