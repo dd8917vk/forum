@@ -3,16 +3,14 @@ import React, { useState } from "react";
 
 const PostBox = styled.div`
 	background-color: #0d0208;
-	margin: auto auto;
-	justify-content: center;
-	margin-right: 10px;
-	width: 80%;
 	height: auto;
 	border: 3px solid #00ff41;
 	border-radius: 6px;
 	word-wrap: break-word;
 	padding: 10px 10px 10px 10px;
-	margin-top: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	margin-left: 10%;
 `;
 const Button = styled.button`
 	margin: auto;

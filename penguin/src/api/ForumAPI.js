@@ -29,6 +29,21 @@ const deleteFavorite = async (event, token, id) => {
 	}
 }
 
+const makePost = async (text, token, categoryId) => {
+  let response = await fetch(`http://localhost:8000/create-post/${categoryId}/`, 
+  {
+    method: 'POST',
+    headers: {
+      'Content-Type':'application/json',
+	  'Authorization': `JWT ${token}`
+    },
+    body: JSON.stringify(text)
+  });
+  console.log(text);
+  console.log(response);
+  return response;
+}
+
 
 export { getAllPosts, deleteFavorite };
 
