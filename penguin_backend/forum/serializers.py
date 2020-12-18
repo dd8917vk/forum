@@ -1,46 +1,44 @@
-
 from rest_framework import serializers
-from .models import Category, Posts, Comments, Answers
+#import base64
+#from drf_extra_fields.fields import Base64ImageField
+from rest_framework.validators import UniqueValidator
+from .models import Category, Post, Comment, Answer
 from django.contrib.auth.models import User
 
-class ViewCategorySerializer(serializers.ModelSerializer):
 
+
+class ViewCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
 
-class PostSerializer(serializers.ModelSerializer):
-
+class ViewPostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Posts
+        model = Post
         fields = '__all__'
 
-class CreatePostsSerializer(serializers.ModelSerializer):
+class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Posts
+        model = Post
         fields = ('title', 'body')
 
-class ViewCommentsSerializer(serializers.ModelSerializer):
+
+class ViewCommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comments
+        model = Comment
         fields = '__all__'
 
-class CreateCommentsSerializer(serializers.ModelSerializer):
+class CreateCommentSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Comments
-        fields = ('body',)
-
-class CreateAnswerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Answers
+        model = Comment
         fields = ('body',)
 
 class ViewAnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Answers
+        model = Answer
         fields = '__all__'
 
-class PostAnswerSerializer(serializers.ModelSerializer):
+class CreateAnswerSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Answers
+        model = Answer
         fields = ('body',)

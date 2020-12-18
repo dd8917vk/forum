@@ -12,8 +12,10 @@ from . import views
 
 urlpatterns = [
     #Command Routes
+    #path('', views.test_view, name="test_view"),
+    #path('categories/', views.CategoriesView.as_view(), name='category-view'),
     url(r'^categories/', views.CategoriesView.as_view(), name='category-view'),
-    url(r'^post/$', views.PostsView.as_view(), name='post-view'),
+    url(r'^posts/', views.PostsView.as_view(), name='posts-view'),
     url(r'^post/(?P<pk>[\w-]+)/$', views.PostDetailView.as_view(), name='post-detail'),
     url(r'^post-comment/(?P<pk>[\w-]+)/$', views.PostCommentView.as_view(), name='post-comment'),
     url(r'^post-answer/(?P<pk>[\w-]+)/$', views.PostAnswerView.as_view(), name='post-answer'),
