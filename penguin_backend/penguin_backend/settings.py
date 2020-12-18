@@ -108,9 +108,9 @@ WSGI_APPLICATION = 'penguin_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'penguin',
-        'USER': 'admin',
-        'PASSWORD': 'password',
+        'NAME': 'forum',
+        'USER': 'ormUser',
+        'PASSWORD': '....',
         'HOST': 'localhost'
     }
 }
