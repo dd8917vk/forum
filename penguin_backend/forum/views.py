@@ -116,6 +116,13 @@ class PostDetailView(APIView):
         except Post.DoesNotExist:
             raise Http404
 
+    # def get_object_by_user(self, pk, request):
+    #     try:
+    #         print(request.user)
+    #         return Post.objects.filter(author=request.user, id=pk)
+    #     except Post.DoesNotExist:
+    #         raise Http404
+
     def get(self, request, pk, format=None):
         post = self.get_object(pk)
         serializer = ViewPostSerializer(post)
@@ -123,12 +130,16 @@ class PostDetailView(APIView):
 
 
     def put(self, request, pk, format=None):
+        # post = self.get_object_by_user(pk, request)
         post = self.get_object(pk)
-        serializer = CreatePostSerializer(post, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-        return Response({"message": "Post Updated"})
+        if request.user == post.author:
+            serializer = CreatePostSerializer(post, data=request.data)
+            if serializer.is_valid(raise_exception=True):
+                serializer.save()
+                return Response(serializer.data)
+            return Response({"message": "Post Updated"})
+        else:
+            raise Http404
 
     def delete(self, request, pk, format=None):
         post = self.get_object(pk)
