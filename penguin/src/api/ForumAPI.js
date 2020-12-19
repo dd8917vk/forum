@@ -29,22 +29,24 @@ const deleteFavorite = async (event, token, id) => {
 	}
 }
 
-const makePost = async (text, token, categoryId) => {
-  let response = await fetch(`http://localhost:8000/create-post/${categoryId}/`, 
+const makePost = async (postObj, token, categoryId) => {
+  let response = await fetch(`http://localhost:8000/forum/create-post/${categoryId}/`, 
   {
     method: 'POST',
     headers: {
       'Content-Type':'application/json',
 	  'Authorization': `JWT ${token}`
     },
-    body: JSON.stringify(text)
+    body: JSON.stringify(postObj)
   });
-  console.log(text);
-  console.log(response);
-  return response;
+  if (response.status === 200){
+	  return true;
+  } else {
+	  return false;
+  }
 }
 
 
-export { getAllPosts, deleteFavorite };
+export { getAllPosts, deleteFavorite, makePost };
 
 

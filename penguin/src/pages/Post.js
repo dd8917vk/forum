@@ -1,8 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import { atom, useRecoilState } from 'recoil';
-import { createAllPostState } from '../globalstate/atom'
-import { makePost } from '../api/ForumAPI'
+import { createAllPostState } from '../globalstate/atom';
+import { makePost } from '../api/ForumAPI';
+import { Link, useHistory } from "react-router-dom";
 
 const PostInput = styled.textarea`
     margin-top:10em;
@@ -69,16 +70,29 @@ const Button = styled.button`
 
 
 
-const handlePost = (event) => {
-    event.preventDefault();
-    let titleText = event.target.form[0].value;
-    let postText = event.target.form[1].value;
-
-}
 
 const Post = () => {
     
-const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
+    const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
+    const hist = useHistory();
+
+    const handlePost = (event) => {
+        event.preventDefault();
+        const token = localStorage.getItem('user');
+        let postTitle = event.target.form[0].value;
+        let postCategory = event.target.form[1].value;
+        let postText = event.target.form[2].value;
+        let postObj = {
+            title : postTitle,
+            body : postText
+        }
+        let postIt = makePost(postObj, token, postCategory);
+        if (postIt) {
+            hist.push("/tty");
+        } else {
+            alert("Your post did not go through.");
+        }
+    }
 
     return (
         <div style={{marginTop:"10em"}}>
