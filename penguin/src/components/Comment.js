@@ -4,35 +4,9 @@ import styled, { css } from "styled-components";
 const CardInput = styled.input`
   width: 90%;
   color:black;
-  /* padding: 21px 0;
-  box-sizing: content-box;
-  width: 70%;
-  font-family: inherit;
-  font-size: 14px;
-  border-top: 0;
-  border-right: 0;
-  border-bottom: 1px solid #ddd;
-  border-left: 0;
-  transition: border-bottom-color 0.25s ease-in;
-  align-self: center;
-  text-align: center; */
-  /* &:focus {
-    border-bottom-color: #e5195f;
-    outline: 0;
-  } */
 `;
 
 const CardTitle = styled.p`
-  /* display: flex;
-  align-self: center;
-  justify-content: center;
-  padding: 7px 0;
-  border-bottom: 1px solid #fff;
-  width: 70%;
-  font-family: inherit;
-  font-size: 14px;
-  border-top: 0;
-  border-right: 0; */
 `;
 
 // const boardObject = { title: "Your Card", items: ["item1", "item2"] };

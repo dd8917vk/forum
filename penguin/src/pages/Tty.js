@@ -46,7 +46,6 @@ const Tty = () => {
         console.log(id);
         let isDelete = deleteFavorite(event, token, id);
         isDelete ? setAllPosts(allPosts.filter(post => post.id !== id)) : alert('Could not delete');
-        
     }
 
     useEffect(()=>{

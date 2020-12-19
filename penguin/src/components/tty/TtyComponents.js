@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import React, { useState } from "react";
+import { BrowserRouter as Router, Switch, Route, Link, useParams, Redirect } from "react-router-dom";
+
 
 const PostBox = styled.div`
 	background-color: #0d0208;
@@ -65,7 +67,9 @@ const TtyComponents = (props) => {
 						<TitleControl>{post?.title}</TitleControl>
 						<PostText>{post?.body}</PostText>
 						<PostControl>
-							<Button>edt</Button>
+							<Link to={`/edit/${post?.id}/${post?.category}`}>
+     	                		<Button >edit</Button>
+							</Link>
 							<Button onClick={(e)=>{return props.delete(e, post?.id)}}>del</Button>
 							<Meta>{post?.author.toString()}</Meta>
 							<Meta>{post?.date_posted.split("T")[0]}</Meta>

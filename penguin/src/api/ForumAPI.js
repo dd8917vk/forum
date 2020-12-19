@@ -46,7 +46,24 @@ const makePost = async (postObj, token, categoryId) => {
   }
 }
 
+const updatePost = async (obj, token, postid) => {
+  console.log(postid);
+  let response = await fetch(`http://localhost:8000/forum/post/${postid}/`, 
+  {
+    method: 'PUT',
+    headers: {
+      'Content-Type':'application/json',
+	  'Authorization': `JWT ${token}`
+    },
+    body: JSON.stringify(obj)
+  });
+  if (response.status === 200){
+	  return true;
+  } else {
+	  return false;
+  }
+}
 
-export { getAllPosts, deleteFavorite, makePost };
+export { getAllPosts, deleteFavorite, makePost, updatePost };
 
 

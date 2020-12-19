@@ -13,6 +13,7 @@ import { login, getLoggedInUser } from './api/API'
 import AuthenticatedRoute from './components/AuthenticatedRoute'
 import Tty from './pages/Tty'
 import Post from './pages/Post'
+import EditPost from './pages/EditPost'
 //cat wines.json | heroku run --no-tty -a wineapi1983 -- python manage.py loaddata --format=json -
 //http://quotes.stormconsultancy.co.uk/random.json
 
@@ -96,6 +97,7 @@ function App() {
         <AuthenticatedRoute exact path="/favorites" render={goFavorites} component={Favorites} />
         <Route exact path="/tty" component={Tty} />
         <Route exact path="/post" component={Post} />
+        <Route exact path="/edit/:postid/:category" component={EditPost} />
       </Router>
     </div>
     

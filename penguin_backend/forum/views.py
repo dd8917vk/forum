@@ -124,7 +124,7 @@ class PostDetailView(APIView):
 
     def put(self, request, pk, format=None):
         post = self.get_object(pk)
-        serializer = ViewPostSerializer(post, data=request.data)
+        serializer = CreatePostSerializer(post, data=request.data)
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
