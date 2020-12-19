@@ -10,7 +10,7 @@
     - Well a lot actually..
         + I stumbled upon a tarball of man pages..
         + I scraped the man pages with a custom python scraper
-        + I used this data to creat the interactive search feature
+        + I used this data to create the interactive search feature
         + And use it to seed the database with each commands manual page in a django database!
         + CRUD.  Django REST API.  React.  Lots of hours.
 
