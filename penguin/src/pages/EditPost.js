@@ -79,7 +79,7 @@ const EditPost = ({ match }) => {
     const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
     const hist = useHistory();
 
-    const editPost = (event) => {
+    const editPost = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('user');
         let postTitle = event.target.form[0].value;
@@ -88,12 +88,14 @@ const EditPost = ({ match }) => {
             title : postTitle,
             body : postText
         }
-        let postIt = updatePost(postObj, token, postid);
-        if (postIt) {
+        let postIt = await updatePost(postObj, token, postid);
+        console.log(postIt)
+
+        if (postIt == true) {
             setAllPosts(allPosts.filter(post => post.id !== postid));
             hist.push("/tty");
         } else {
-            alert("Your post did not update.");
+            console.log("Unauthorized Update Attempt")
         }
     }
 

@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { atom, useRecoilState } from 'recoil';
 import { createAllPostState } from '../globalstate/atom';
-import { makePost } from '../api/ForumAPI';
+import { makePost, getAllPosts } from '../api/ForumAPI';
 import { Link, useHistory } from "react-router-dom";
 
 const PostInput = styled.textarea`
@@ -76,7 +76,7 @@ const Post = () => {
     const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
     const hist = useHistory();
 
-    const handlePost = (event) => {
+    const handlePost = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('user');
         let postTitle = event.target.form[0].value;
@@ -88,6 +88,7 @@ const Post = () => {
         }
         let postIt = makePost(postObj, token, postCategory);
         if (postIt) {
+            setAllPosts(await getAllPosts(token));
             hist.push("/tty");
         } else {
             alert("Your post did not go through.");

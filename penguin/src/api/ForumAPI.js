@@ -60,6 +60,7 @@ const updatePost = async (obj, token, postid) => {
   if (response.status === 200){
 	  return true;
   } else {
+	  console.log(response.status)
 	  return false;
   }
 }
