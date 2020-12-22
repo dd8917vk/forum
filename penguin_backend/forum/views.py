@@ -11,6 +11,7 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.decorators import permission_classes
 from rest_framework.authtoken.models import Token
 from django.http import Http404
+from django.shortcuts import get_object_or_404
 
 # Create your views here. /forum/categories/
 class CategoriesView(APIView):
@@ -36,7 +37,7 @@ class PostCategoryView(APIView):
          categoryid = Category.objects.get(pk=pk)
          serializer = CreatePostSerializer(data=request.data)
          if serializer.is_valid(raise_exception=True):
-            serializer.save(author=request.user, category=categoryid)
+            serializer.save(author=request.user, user_id=request.user,category=categoryid)
             return Response({"message": "created Post"})
          else:
             return Response({"Message": "COULD NOT create POST"})
@@ -98,7 +99,7 @@ class PostAnswerView(APIView):
 class PostDetailView(APIView):
  
     def get(self, request, pk, format=None):
-        post = Post.objects.get(pk=pk)
+        post = get_object_or_404(Post, pk=pk)
         serializer = ViewPostSerializer(post)
         return Response(serializer.data)
 

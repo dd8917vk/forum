@@ -25,6 +25,4 @@ urlpatterns = [
      url(r'^users/posts/', views.UserPosts.as_view(), name='user-posts'),
      url(r'^post/comment/(?P<pk>[\w-]+)/$', views.PostCommentView.as_view(), name='post-comment'),
      url(r'^post/answer/(?P<pk>[\w-]+)/$', views.PostAnswerView.as_view(), name='post-answer'),
-
-
 ]

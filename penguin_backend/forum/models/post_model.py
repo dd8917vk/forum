@@ -29,9 +29,6 @@ class PostManager(models.Manager):
         post.favorites.add(myuser)
         return "Favorited {}".format(post.title)
 
-    def get_detail(self, pk):
-        post = self.get(pk=pk)
-        return post
 
 
 class Post(models.Model):
@@ -40,6 +37,7 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     likes = models.ManyToManyField(User, related_name='users')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_id')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     objects = PostManager()
 
