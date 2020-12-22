@@ -108,8 +108,8 @@ WSGI_APPLICATION = 'penguin_backend.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'penguin',
-        'USER': 'admin',
+        'NAME': 'forum',
+        'USER': 'penguin',
         'PASSWORD': 'password',
         'HOST': 'localhost'
     }

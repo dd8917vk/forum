@@ -12,20 +12,6 @@ from rest_framework.decorators import permission_classes
 from rest_framework.authtoken.models import Token
 from django.http import Http404
 
-"""
-/categories/
-/posts/ # gets all the posts
-/posts/categoryid/
-/posts/id/ Get, update, delete, POST -> 
-/post-comments/<postid>
-
-
-git add. 
-git commit -m 'first commit' 
-git push forum shay
-
-"""
-
 # Create your views here. /forum/categories/
 class CategoriesView(APIView):
     #get request
@@ -110,28 +96,60 @@ class PostAnswerView(APIView):
 #Detail view for posts like: /forum/post/<POST_ID>/
 #Can get, put, update and delete on this route
 class PostDetailView(APIView):
+ 
+    def get(self, request, pk, format=None):
+        post = Post.objects.get(pk=pk)
+        serializer = ViewPostSerializer(post)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        post = Post.objects.get(pk=pk)
+        serializer = ViewPostSerializer(post, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        return Response({"Message": "Updated post"})
+
+    def delete(self, request, pk, format=None):
+        post = Post.objects.get(pk=pk)
+        post.delete()
+        return Response({"Message": "Deleted post"})
+
+
+class LikePostView(APIView):
     def get_object(self, pk):
         try:
             return Post.objects.get(pk=pk)
         except Post.DoesNotExist:
             raise Http404
 
-    def get(self, request, pk, format=None):
+    def post(self, request, pk, format=None):
         post = self.get_object(pk)
         serializer = ViewPostSerializer(post)
         return Response(serializer.data)
 
 
-    def put(self, request, pk, format=None):
-        post = self.get_object(pk)
-        serializer = ViewPostSerializer(post, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class VoteAnswerView(APIView):
+    def get_object(self, pk):
+        try:
+            return Post.objects.get(pk=pk)
+        except Post.DoesNotExist:
+            raise Http404
 
-    def delete(self, request, pk, format=None):
+    def post(self, request, pk, format=None):
         post = self.get_object(pk)
-        post.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+        serializer = ViewPostSerializer(post)
+        return Response(serializer.data)
 
+
+class UserPosts(APIView):
+    def get(self, request, format=None):
+        posts = Post.objects.get_user_posts(request)
+        serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
+        return Response(serializer.data)
+
+class CategoryPosts(APIView):
+    def get(self, request, title,  format=None):
+        posts = Post.objects.get_posts_category(title)
+        serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
+        return Response(serializer.data)

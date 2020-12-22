@@ -15,10 +15,16 @@ urlpatterns = [
     #path('', views.test_view, name="test_view"),
     #path('categories/', views.CategoriesView.as_view(), name='category-view'),
     url(r'^categories/', views.CategoriesView.as_view(), name='category-view'),
+    #all routes for posts
     url(r'^posts/', views.PostsView.as_view(), name='posts-view'),
     url(r'^post/(?P<pk>[\w-]+)/$', views.PostDetailView.as_view(), name='post-detail'),
-    url(r'^post-comment/(?P<pk>[\w-]+)/$', views.PostCommentView.as_view(), name='post-comment'),
-    url(r'^post-answer/(?P<pk>[\w-]+)/$', views.PostAnswerView.as_view(), name='post-answer'),
-    url(r'^create-post/(?P<pk>[\w-]+)/$', views.PostCategoryView.as_view(), name='category-post'),
+    url(r'^post/category/(?P<title>[\w-]+)/$', views.CategoryPosts.as_view(), name='post-categories'),
+    url(r'^post/create/(?P<pk>[\w-]+)/$', views.PostCategoryView.as_view(), name='category-post'),
+    # View related post materia
+    # Query posts
+     url(r'^users/posts/', views.UserPosts.as_view(), name='user-posts'),
+     url(r'^post/comment/(?P<pk>[\w-]+)/$', views.PostCommentView.as_view(), name='post-comment'),
+     url(r'^post/answer/(?P<pk>[\w-]+)/$', views.PostAnswerView.as_view(), name='post-answer'),
+
 
 ]
