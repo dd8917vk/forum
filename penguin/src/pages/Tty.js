@@ -27,7 +27,6 @@ const ContainerBody = styled.div`
 `
 
 const Tty = () => {
-    
     let token = localStorage.getItem('user');
     
     //global state for posts
@@ -35,7 +34,6 @@ const Tty = () => {
 
     // const [allPosts, setAllPosts] = useState([])
 
-    console.log(allPosts)
     const result = async (token) => {
         let data = await getAllPosts(token);
         setAllPosts(data)

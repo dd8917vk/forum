@@ -9,3 +9,8 @@ export const createAllPostState = atom({
   key: "createAllPostState",
   default: [],
 });
+
+export const createAllCategoriesState = atom({
+  key: "createAllCategoriesState",
+  default: [],
+});

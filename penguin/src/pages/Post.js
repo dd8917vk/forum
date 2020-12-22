@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { atom, useRecoilState } from 'recoil';
-import { createAllPostState } from '../globalstate/atom';
-import { makePost, getAllPosts } from '../api/ForumAPI';
+import { createAllPostState, createAllCategoriesState } from '../globalstate/atom';
+import { makePost, getAllPosts, renderCategory } from '../api/ForumAPI';
 import { Link, useHistory } from "react-router-dom";
 
 const PostInput = styled.textarea`
@@ -68,19 +68,20 @@ const Button = styled.button`
 	background-color: #003B00;
 `;
 
-
-
-
 const Post = () => {
-    
+    const [selectMenuId, setSelectMenuId] = useState('');
     const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
     const hist = useHistory();
+    const token = localStorage.getItem('user');
+    const [allCategories, setAllCategories] = useRecoilState(createAllCategoriesState);
 
     const handlePost = async (event) => {
         event.preventDefault();
         const token = localStorage.getItem('user');
         let postTitle = event.target.form[0].value;
-        let postCategory = event.target.form[1].value;
+        // let postCategory = event.target.form[1].value;
+        let postCategory = selectMenuId;
+        console.log(selectMenuId)
         let postText = event.target.form[2].value;
         let postObj = {
             title : postTitle,
@@ -95,12 +96,31 @@ const Post = () => {
         }
     }
 
+    
+    useEffect(()=> {
+        const data = async () => await renderCategory(token);
+        let results = data().then(resp => {
+            setAllCategories(resp);
+            console.log(allCategories)
+        });
+    }, [])
+
+    const selectedChange = (event) =>{
+        const select = event.target;
+        const id = select.children[select.selectedIndex].id;
+        setSelectMenuId(id);
+        console.log(selectMenuId);
+    }
     return (
         <div style={{marginTop:"10em"}}>
             <form>
                 <PostContainer>
                     <TitleInput placeholder="Title"/>
-                    <Category><option>1</option></Category>
+                    <Category onChange={selectedChange}>
+                        {allCategories.map((item, index)=>{
+                            return <option id={item.id}>{item?.title}</option> 
+                        })}
+                    </Category>
                 </PostContainer>
                     <PostInput /> 
                 <Button onClick={handlePost}>Submit</Button>

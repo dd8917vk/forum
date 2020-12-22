@@ -64,7 +64,8 @@ function App() {
     let data = await response.json()
     if (data.token) {
       localStorage.setItem('user', data.token);
-      localStorage.setItem('userId', data.user.id);
+      console.log(data.user.username)
+      localStorage.setItem('userId', data.user.username);
       // localStorage.setItem('userId', data.)
       setIsLoggedIn(true);
       setUser(data.user);

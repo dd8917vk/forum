@@ -65,6 +65,18 @@ const updatePost = async (obj, token, postid) => {
   }
 }
 
-export { getAllPosts, deleteFavorite, makePost, updatePost };
+const renderCategory = async (token) => {
+	let response = await fetch(`http://localhost:8000/forum/categories/`,
+	{
+		method: 'GET', 
+		headers: {
+      		'Content-Type':'application/json',
+	  		'Authorization': `JWT ${token}`
+		}
+	});
+	const data = await response.json();
+	return data;
+}
+export { getAllPosts, deleteFavorite, makePost, updatePost, renderCategory };
 
 

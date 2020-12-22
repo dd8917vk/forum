@@ -59,7 +59,10 @@ const PostComment = styled.p`
 `;
 
 const TtyComponents = (props) => {
-	let userId = localStorage.getItem('userId');
+	let username = localStorage.getItem('userId');
+	console.log(props.posts)
+	console.log(username)
+
 	return (
 		<div>
 			{props.posts?.map((post, index) => {
@@ -68,12 +71,12 @@ const TtyComponents = (props) => {
 						<TitleControl>{post?.title}</TitleControl>
 						<PostText>{post?.body}</PostText>
 						<PostControl>
-							{userId === post.author.toString() ? <Link to={`/edit/${post?.id}/${post?.category}`}>
+							{username === post?.author ? <Link to={`/edit/${post?.id}/${post?.category}`}>
      	                		<Button >edit</Button>
 							</Link> : null}
-							{userId === post.author.toString() ? <Button onClick={(e)=>{return props.delete(e, post?.id)}}>del</Button> : null }
+							{username === post?.author ? <Button onClick={(e)=>{return props.delete(e, post?.id)}}>del</Button> : null }
 
-							<Meta>{post?.author.toString()}</Meta>
+							<Meta>{post?.author}</Meta>
 							<Meta>{post?.date_posted.split("T")[0]}</Meta>
 						</PostControl>
 					</PostBox>
