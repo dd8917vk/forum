@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
-
+import { renderCategory } from '../../api/ForumAPI'
+import { atom, useRecoilState } from 'recoil';
+import { createCategoryIdState } from '../../globalstate/atom'
 const SideBox = styled.div`
 	/* background-color: #0d0208; */
 	display: flex;
+	flex-direction: column;
 	background-color: black;
 	justify-content: flex-start;
 	margin-right: 10px;
@@ -17,11 +20,9 @@ const SideBox = styled.div`
     position: absolute;
 `;
 const Button = styled.button`
-	margin: auto;
 	color: whitesmoke;
 	font-size: 10px;
-	margin: 5px;
-	padding: 5px 5px;
+	margin: 1px;
 	border: 2px solid #00ff41;
 	border-radius: 3px;
 	height: 3em;
@@ -30,11 +31,29 @@ const Button = styled.button`
 `;
 
 
-const TtySideBar = () => {
+const TtySideBar = (props) => {
+	const [categories, setCategories] = useState([]);
+	let token = localStorage.getItem('user');
+    const [categoryState, setCategoryState] = useRecoilState(createCategoryIdState);
+
+	useEffect(()=>{
+		const data = async () => await renderCategory(token);
+        let results = data().then(resp => {
+			setCategories(resp);
+        });
+	}, [])
+
+	const displayCategory = (event, itemId) => {
+		setCategoryState(itemId)
+		console.log(categoryState);
+		props.currentCategory(itemId);
+	}
     return (
         <div>
             <SideBox>
-                <Button>category</Button>
+				{categories.map((item, index)=> 
+					<Button onClick={(e)=>{displayCategory(e, item?.id)}} key={index}>{item?.title}</Button>
+				)}
             </SideBox>
         </div>
     )

@@ -14,3 +14,11 @@ export const createAllCategoriesState = atom({
   key: "createAllCategoriesState",
   default: [],
 });
+export const createCategoryIdState = atom({
+  key: "createCategoryIdState",
+  default: 0,
+});
+export const createFilteredPostState = atom({
+  key: "createFilteredPostState",
+  default: [],
+});

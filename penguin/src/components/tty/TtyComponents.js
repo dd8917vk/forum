@@ -60,8 +60,6 @@ const PostComment = styled.p`
 
 const TtyComponents = (props) => {
 	let username = localStorage.getItem('userId');
-	console.log(props.posts)
-	console.log(username)
 
 	return (
 		<div>

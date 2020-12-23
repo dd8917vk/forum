@@ -5,7 +5,7 @@ import TtyComponents from '../components/tty/TtyComponents';
 import { deleteFavorite } from '../api/ForumAPI';
 import TtyNav from '../components/tty/TtyNav';
 import { atom, useRecoilState } from 'recoil';
-import { createAllPostState } from '../globalstate/atom';
+import { createAllPostState, createAllCategoriesState, createCategoryIdState, createFilteredPostState } from '../globalstate/atom';
 import TtySideBar from '../components/tty/TtySideBar';
 
 const ContainerNav = styled.div`
@@ -31,7 +31,9 @@ const Tty = () => {
     
     //global state for posts
     const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
-
+    const [allCategories, setAllCategories] = useRecoilState(createAllCategoriesState);
+    const [categoryState, setCategoryState] = useRecoilState(createCategoryIdState);
+    const [filteredPosts, setFilteredPosts] = useRecoilState(createFilteredPostState);
     // const [allPosts, setAllPosts] = useState([])
 
     const result = async (token) => {
@@ -40,8 +42,6 @@ const Tty = () => {
     }
 
     const initiateDelete = (event, id) => {
-        console.log(event);
-        console.log(id);
         let isDelete = deleteFavorite(event, token, id);
         isDelete ? setAllPosts(allPosts.filter(post => post.id !== id)) : alert('Could not delete');
     }
@@ -52,16 +52,29 @@ const Tty = () => {
 
     }, [])
 
+
+    const getFilteredPosts = () => {
+        let filteredPosts = allPosts.filter(item=>item.category === categoryState);
+        setFilteredPosts(filteredPosts);
+        console.log(filteredPosts);
+    }
+
+    const getCategoryState = (categoryId) => {
+        setCategoryState(categoryId);
+        console.log(categoryState);
+        getFilteredPosts();
+    }
+
     return (
         <div>
             <ContainerNav>
                 <TtyNav/>
             </ContainerNav>
             <ContainerSide>
-                <TtySideBar/>
+                <TtySideBar currentCategory={getCategoryState}/>
             </ContainerSide>
             <ContainerBody>
-                {allPosts ? <TtyComponents posts={allPosts} delete={initiateDelete}/> : null}
+                {filteredPosts ? <TtyComponents posts={filteredPosts} delete={initiateDelete}/> : null}
             </ContainerBody>
         </div>
     )

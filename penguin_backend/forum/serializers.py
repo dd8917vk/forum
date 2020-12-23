@@ -16,7 +16,7 @@ class ViewPostSerializer(serializers.ModelSerializer):
     author = serializers.SlugRelatedField(slug_field="username", queryset=User.objects.all())
     class Meta:
         model = Post
-        fields = ('title', 'body', 'date_posted', 'likes', 'author', 'category') 
+        fields = ('id', 'title', 'body', 'date_posted', 'likes', 'author', 'category') 
 
 class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
