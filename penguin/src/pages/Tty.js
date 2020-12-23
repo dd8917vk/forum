@@ -31,7 +31,6 @@ const Tty = () => {
     
     //global state for posts
     const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
-    const [categoryState, setCategoryState] = useRecoilState(createCategoryIdState);
     const [filteredPosts, setFilteredPosts] = useRecoilState(createFilteredPostState);
     // const [allPosts, setAllPosts] = useState([])
 
@@ -52,17 +51,13 @@ const Tty = () => {
     }, [])
 
 
-    const getFilteredPosts = () => {
-        let filteredPosts = allPosts.filter(item=>item.category === categoryState);
+    const getFilteredPosts = (categoryId) => {
+        let filteredPosts = allPosts.filter(item=>item.category === categoryId);
         setFilteredPosts(filteredPosts);
-        console.log(filteredPosts);
     }
 
     const getCategoryState = (categoryId) => {
-        // setCategoryState(categoryId);
-        setCategoryState(categoryId);
-        console.log(categoryState);
-        getFilteredPosts();
+        getFilteredPosts(categoryId);
     }
 
     return (
