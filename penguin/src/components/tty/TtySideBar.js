@@ -33,8 +33,9 @@ const Button = styled.button`
 
 const TtySideBar = (props) => {
 	const [categories, setCategories] = useState([]);
+	const [categoryState, setCategoryState] = useRecoilState(createCategoryIdState);
+
 	let token = localStorage.getItem('user');
-    const [categoryState, setCategoryState] = useRecoilState(createCategoryIdState);
 
 	useEffect(()=>{
 		const data = async () => await renderCategory(token);
@@ -44,9 +45,12 @@ const TtySideBar = (props) => {
 	}, [])
 
 	const displayCategory = (event, itemId) => {
-		setCategoryState(itemId)
-		console.log(categoryState);
+		event.preventDefault();
+		setCategoryState(itemId);
+		console.log(itemId)
+		console.log(categoryState)
 		props.currentCategory(itemId);
+		// console.log(categoryState);
 	}
     return (
         <div>

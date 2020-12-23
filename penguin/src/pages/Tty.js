@@ -5,7 +5,7 @@ import TtyComponents from '../components/tty/TtyComponents';
 import { deleteFavorite } from '../api/ForumAPI';
 import TtyNav from '../components/tty/TtyNav';
 import { atom, useRecoilState } from 'recoil';
-import { createAllPostState, createAllCategoriesState, createCategoryIdState, createFilteredPostState } from '../globalstate/atom';
+import { createAllPostState, createCategoryIdState, createFilteredPostState } from '../globalstate/atom';
 import TtySideBar from '../components/tty/TtySideBar';
 
 const ContainerNav = styled.div`
@@ -31,7 +31,6 @@ const Tty = () => {
     
     //global state for posts
     const [allPosts, setAllPosts] = useRecoilState(createAllPostState);
-    const [allCategories, setAllCategories] = useRecoilState(createAllCategoriesState);
     const [categoryState, setCategoryState] = useRecoilState(createCategoryIdState);
     const [filteredPosts, setFilteredPosts] = useRecoilState(createFilteredPostState);
     // const [allPosts, setAllPosts] = useState([])
@@ -60,6 +59,7 @@ const Tty = () => {
     }
 
     const getCategoryState = (categoryId) => {
+        // setCategoryState(categoryId);
         setCategoryState(categoryId);
         console.log(categoryState);
         getFilteredPosts();
