@@ -24,7 +24,6 @@ const SearchBar = styled.input`
     border-radius: 5px;
 `
 
-
 export default function SearchData(props) {
 
     const [data, setData] = useState([]);

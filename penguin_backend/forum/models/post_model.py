@@ -30,14 +30,12 @@ class PostManager(models.Manager):
         return "Favorited {}".format(post.title)
 
 
-
 class Post(models.Model):
     title = models.CharField(max_length=100)
     body = models.TextField()
     date_posted = models.DateTimeField(default=timezone.now)
     likes = models.ManyToManyField(User, related_name='users')
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='user_id')
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     objects = PostManager()
 

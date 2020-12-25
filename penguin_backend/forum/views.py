@@ -37,7 +37,7 @@ class PostCategoryView(APIView):
          categoryid = Category.objects.get(pk=pk)
          serializer = CreatePostSerializer(data=request.data)
          if serializer.is_valid(raise_exception=True):
-            serializer.save(author=request.user, user_id=request.user,category=categoryid)
+            serializer.save(author=request.user, category=categoryid)
             return Response({"message": "created Post"})
          else:
             return Response({"Message": "COULD NOT create POST"})

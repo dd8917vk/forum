@@ -6,7 +6,6 @@ import { createHtmlDataState } from '../globalstate/atom';
 import logo from '../static/peng1.png';
 
 function Navbar(props) {
-
     // if(!props.isLoggedIn){
     //     hist.push('/');
     // }
