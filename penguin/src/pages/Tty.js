@@ -7,6 +7,7 @@ import TtyNav from '../components/tty/TtyNav';
 import { atom, useRecoilState } from 'recoil';
 import { createAllPostState, createCategoryIdState, createFilteredPostState } from '../globalstate/atom';
 import TtySideBar from '../components/tty/TtySideBar';
+import TtyTable from '../components/tty/TtyTable';
 
 const ContainerNav = styled.div`
     display:flex;
@@ -23,7 +24,7 @@ const ContainerBody = styled.div`
     display:flex;
     flex-direction: column;
     width: 80%;
-    margin-left: 20%;
+    
 `
 
 const Tty = () => {
@@ -69,7 +70,8 @@ const Tty = () => {
                 <TtySideBar currentCategory={getCategoryState}/>
             </ContainerSide>
             <ContainerBody>
-                {filteredPosts ? <TtyComponents posts={filteredPosts} delete={initiateDelete}/> : null}
+                {filteredPosts ? <TtyTable posts={filteredPosts}/> : null}
+                {/* {filteredPosts ? <TtyComponents posts={filteredPosts} delete={initiateDelete}/> : null} */}
             </ContainerBody>
         </div>
     )
