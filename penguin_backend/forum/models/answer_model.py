@@ -2,12 +2,14 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 from .post_model import *
-# Create your models here.
 
+
+# Create your models here.
 class AnswerManager(models.Manager):
     def get_latest_answers(self):
         answers = self.objects.all()
         return answers
+
 
 class Answer(models.Model):
     body = models.TextField()

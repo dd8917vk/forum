@@ -26,7 +26,7 @@ class PostManager(models.Manager):
     def favorite_post(self, pk, request):
         myuser = request.user
         post = self.get(pk=pk)
-        post.favorites.add(myuser)
+        post.likes.add(myuser)
         return "Favorited {}".format(post.title)
 
 

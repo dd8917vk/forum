@@ -10,6 +10,10 @@ class CommentManager(models.Manager):
         comments = self.objects.all()
         return comments
 
+    def get_user_comments(self, request):
+        pass
+
+
 
 class Comment(models.Model):
     body = models.CharField(max_length=200)

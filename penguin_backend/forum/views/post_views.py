@@ -1,27 +1,24 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .serializers import *
-from .models import Category
+from forum.serializers import *
+from forum.models import Category
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import generics
-from rest_framework import filters
 from django.contrib.auth.models import User
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework.decorators import permission_classes
-from rest_framework.authtoken.models import Token
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 
-# Create your views here. /forum/categories/
-class CategoriesView(APIView):
-    #get request
-    def get(self, request, format=None):
-        categories = Category.objects.all()
-        serializer = ViewCategorySerializer(categories, context={"request": request}, many=True)
-        return Response(serializer.data)
 
-# View Posts //get, post, update, delete
+"""
+
+/posts/
+/post/id/
+/post/category/
+/post/create/
+/post/comment/<id>
+/post/answer/<id>
+/post/like/<id>
+
+"""
+
 
 # Get all posts in database. /forum/posts/
 class PostsView(APIView):
@@ -31,15 +28,45 @@ class PostsView(APIView):
         serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
         return Response(serializer.data)
 
+
+#Detail view for posts like: /forum/post/<POST_ID>/
+#Can get, put, update and delete on this route
+class PostDetailView(APIView):
+ 
+    def get(self, request, pk, format=None):
+        post = get_object_or_404(Post, pk=pk)
+        serializer = ViewPostSerializer(post)
+        return Response(serializer.data)
+
+    def put(self, request, pk, format=None):
+        post = Post.objects.get(pk=pk)
+        serializer = ViewPostSerializer(post, data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        return Response({"Message": "Updated post"})
+
+    def delete(self, request, pk, format=None):
+        post = Post.objects.get(pk=pk)
+        post.delete()
+        return Response({"Message": "Deleted post"})
+
 #adding a post under a category /forum/create-post/<CATEGORY_ID>
 class PostCategoryView(APIView):
-     def post(self, request, pk, format=None):
-         categoryid = Category.objects.get(pk=pk)
-         serializer = CreatePostSerializer(data=request.data)
-         if serializer.is_valid(raise_exception=True):
+
+    #Get post by category id {Will change this to title}
+    def get(self, request, pk, format=None):
+        posts = Post.objects.get_posts_category(title)
+        serializer = ViewPostSerializer(posts,  context={"request": request}, many=True)
+        return Response(serializer.data)
+
+    def post(self, request, pk, format=None):
+        categoryid = Category.objects.get(pk=pk)
+        serializer = CreatePostSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
             serializer.save(author=request.user, category=categoryid)
             return Response({"message": "created Post"})
-         else:
+        else:
             return Response({"Message": "COULD NOT create POST"})
 
 
@@ -94,29 +121,6 @@ class PostAnswerView(APIView):
             return Response({"Message": "COULD NOT create Comment"})
 
 
-#Detail view for posts like: /forum/post/<POST_ID>/
-#Can get, put, update and delete on this route
-class PostDetailView(APIView):
- 
-    def get(self, request, pk, format=None):
-        post = get_object_or_404(Post, pk=pk)
-        serializer = ViewPostSerializer(post)
-        return Response(serializer.data)
-
-    def put(self, request, pk, format=None):
-        post = Post.objects.get(pk=pk)
-        serializer = ViewPostSerializer(post, data=request.data)
-        if serializer.is_valid(raise_exception=True):
-            serializer.save()
-            return Response(serializer.data)
-        return Response({"Message": "Updated post"})
-
-    def delete(self, request, pk, format=None):
-        post = Post.objects.get(pk=pk)
-        post.delete()
-        return Response({"Message": "Deleted post"})
-
-
 class LikePostView(APIView):
     def get_object(self, pk):
         try:
@@ -126,31 +130,19 @@ class LikePostView(APIView):
 
     def post(self, request, pk, format=None):
         post = self.get_object(pk)
+        post.likes.add(request.user)
         serializer = ViewPostSerializer(post)
         return Response(serializer.data)
 
-
-class VoteAnswerView(APIView):
-    def get_object(self, pk):
-        try:
-            return Post.objects.get(pk=pk)
-        except Post.DoesNotExist:
-            raise Http404
-
-    def post(self, request, pk, format=None):
-        post = self.get_object(pk)
-        serializer = ViewPostSerializer(post)
-        return Response(serializer.data)
-
-
-class UserPosts(APIView):
-    def get(self, request, format=None):
-        posts = Post.objects.get_user_posts(request)
-        serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
-        return Response(serializer.data)
 
 class CategoryPosts(APIView):
     def get(self, request, title,  format=None):
         posts = Post.objects.get_posts_category(title)
+        serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
+        return Response(serializer.data)
+
+class UserPosts(APIView):
+    def get(self, request,format=None):
+        posts = Post.objects.get_user_posts(request)
         serializer = ViewPostSerializer(posts, context={"request": request}, many=True)
         return Response(serializer.data)
